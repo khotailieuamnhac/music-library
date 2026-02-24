@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Music Learning Library</title>
+<title>Music Library Index</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,22 +11,20 @@
 
 <style>
   :root{
-    /* Acoustic palette: night + warm stage light + wood */
-    --bg0:#0c0b08;
-    --bg1:#12100c;
-    --bg2:#1a1610;
-    --card: rgba(255,255,255,.05);
-    --line: rgba(255,255,255,.12);
+    --bg0:#0b0906;
+    --bg1:#15110b;
+    --bg2:#1a140c;
 
     --text: rgba(255,255,255,.92);
-    --muted: rgba(255,255,255,.65);
+    --muted: rgba(255,255,255,.62);
+    --line: rgba(255,255,255,.12);
 
-    --amber:#ffb454;   /* warm light */
-    --copper:#ff6a3d;  /* subtle warm accent */
-    --mint:#2ad2a2;    /* tiny contrast (very subtle) */
+    --amber:#ffb454;
+    --copper:#ff6a3d;
+    --olive:#9bd38a;
 
     --radius: 22px;
-    --shadow: 0 18px 50px rgba(0,0,0,.55);
+    --shadow: 0 22px 60px rgba(0,0,0,.60);
   }
 
   *{ box-sizing:border-box; }
@@ -35,58 +33,87 @@
     font-family:'Outfit', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     color:var(--text);
     background:
-      radial-gradient(900px 600px at 20% 12%, rgba(255,180,84,.18), transparent 55%),
-      radial-gradient(900px 600px at 85% 10%, rgba(255,106,61,.12), transparent 55%),
-      radial-gradient(900px 600px at 50% 110%, rgba(42,210,162,.06), transparent 60%),
+      radial-gradient(900px 600px at 18% 12%, rgba(255,180,84,.18), transparent 55%),
+      radial-gradient(900px 650px at 86% 10%, rgba(255,106,61,.12), transparent 55%),
+      radial-gradient(900px 700px at 55% 110%, rgba(155,211,138,.06), transparent 60%),
       linear-gradient(135deg, var(--bg0), var(--bg1), var(--bg2));
     min-height:100vh;
     overflow-x:hidden;
   }
 
+  /* ===== ART OVERLAYS ===== */
+  .grain{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:.20;
+    mix-blend-mode: overlay;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0px, rgba(255,255,255,.035) 1px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 4px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 1px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 6px);
+    animation: grainMove 10s steps(10) infinite;
+  }
+  @keyframes grainMove{
+    0%{ transform: translate(0,0); }
+    20%{ transform: translate(-2%, 2%); }
+    40%{ transform: translate(2%, -2%); }
+    60%{ transform: translate(3%, 1%); }
+    80%{ transform: translate(-3%, -2%); }
+    100%{ transform: translate(0,0); }
+  }
+
+  .vignette{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+    background: radial-gradient(circle at 50% 45%, rgba(0,0,0,0) 35%, rgba(0,0,0,.45) 100%);
+    opacity:.65;
+  }
+
   .wrap{
     max-width:980px;
     margin:0 auto;
-    padding:44px 18px 64px;
+    padding:44px 18px 66px;
     position:relative;
+    z-index:2;
   }
 
-  /* Subtle animated sound waves */
   .waves{
     position:absolute;
     inset:0;
     pointer-events:none;
-    opacity:.22; /* subtle */
+    opacity:.18;
     mix-blend-mode: screen;
-    filter: blur(.2px);
+    z-index:1;
   }
   .wave{
     position:absolute;
-    left:-10%;
-    width:120%;
-    height:180px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,180,84,.14);
-    box-shadow: 0 0 22px rgba(255,180,84,.06);
-    transform: translateY(0);
-    animation: floaty 10s ease-in-out infinite;
+    left:-12%;
+    width:124%;
+    height:190px;
+    border-radius:999px;
+    border:1px solid rgba(255,180,84,.12);
+    animation: floaty 16s ease-in-out infinite;
   }
-  .wave:nth-child(1){ top:110px;  opacity:.35; animation-duration: 11s; }
-  .wave:nth-child(2){ top:190px;  opacity:.22; animation-duration: 14s; border-color: rgba(255,106,61,.12); }
-  .wave:nth-child(3){ top:290px;  opacity:.18; animation-duration: 16s; border-color: rgba(255,180,84,.10); }
-  .wave:nth-child(4){ top:410px;  opacity:.12; animation-duration: 18s; border-color: rgba(255,255,255,.08); }
+  .wave:nth-child(1){ top:120px; opacity:.26; animation-duration: 16s; }
+  .wave:nth-child(2){ top:240px; opacity:.18; animation-duration: 21s; border-color: rgba(255,106,61,.10); }
+  .wave:nth-child(3){ top:380px; opacity:.14; animation-duration: 26s; border-color: rgba(255,255,255,.08); }
+  .wave:nth-child(4){ top:520px; opacity:.10; animation-duration: 31s; border-color: rgba(155,211,138,.07); }
 
   @keyframes floaty{
     0%   { transform: translateX(0) translateY(0) scaleX(1); }
-    50%  { transform: translateX(2.5%) translateY(-10px) scaleX(1.02); }
+    50%  { transform: translateX(2.2%) translateY(-10px) scaleX(1.02); }
     100% { transform: translateX(0) translateY(0) scaleX(1); }
   }
 
-  /* Header */
-  .top{
+  /* ===== TOP BAR ===== */
+  .topbar{
     display:flex;
     justify-content:space-between;
     align-items:flex-start;
-    gap:14px;
+    gap:12px;
     flex-wrap:wrap;
     position:relative;
     z-index:2;
@@ -99,29 +126,37 @@
   }
 
   .logo{
-    width:44px;height:44px;
-    border-radius: 16px;
+    width:48px;height:48px;
+    border-radius:16px;
     display:grid; place-items:center;
-    background: radial-gradient(circle at 30% 30%, rgba(255,180,84,.95), rgba(255,106,61,.65));
-    box-shadow: 0 14px 30px rgba(255,180,84,.12);
-    border:1px solid rgba(255,255,255,.12);
+    font-weight:800;
+    background: radial-gradient(circle at 30% 30%, rgba(255,180,84,.98), rgba(255,106,61,.68));
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow: 0 18px 38px rgba(255,180,84,.10);
+    color: rgba(15,11,6,.92);
   }
 
-  h1{
+  .title h1{
     margin:0;
-    font-size:2.2rem;
-    line-height:1.1;
-    letter-spacing:.3px;
+    font-size:2.25rem;
+    line-height:1.06;
+    letter-spacing:.2px;
   }
-
-  .subtitle{
-    margin-top:10px;
+  .title p{
+    margin:10px 0 0;
     color:var(--muted);
-    max-width:62ch;
+    max-width:64ch;
     font-size:1.02rem;
   }
 
-  .langBtn{
+  .controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+
+  .pill{
     border:1px solid var(--line);
     padding:10px 14px;
     border-radius:999px;
@@ -131,98 +166,182 @@
     color:rgba(255,255,255,.86);
     transition:.2s ease;
     user-select:none;
-    z-index:2;
   }
-  .langBtn:hover{
-    background:rgba(255,255,255,.08);
+  .pill:hover{
+    background:rgba(255,255,255,.085);
     transform: translateY(-1px);
+    border-color: rgba(255,180,84,.28);
   }
 
-  /* Grid */
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
-    gap:16px;
-    margin-top:36px;
-    position:relative;
-    z-index:2;
-  }
-
-  .card{
-    text-decoration:none;
-    color:var(--text);
-    border:1px solid var(--line);
-    border-radius: var(--radius);
-    padding:22px 18px;
-    background: rgba(255,255,255,.04);
-    transition: transform .22s ease, background .22s ease, border-color .22s ease, box-shadow .22s ease;
+  /* ===== POSTER MODE ===== */
+  .poster{
+    margin-top:26px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius: 28px;
+    background:
+      radial-gradient(380px 240px at 18% 18%, rgba(255,180,84,.10), transparent 60%),
+      radial-gradient(420px 260px at 88% 30%, rgba(255,106,61,.08), transparent 60%),
+      rgba(255,255,255,.03);
+    box-shadow: var(--shadow);
     position:relative;
     overflow:hidden;
-    box-shadow: 0 10px 26px rgba(0,0,0,.28);
-    min-height: 140px;
+    z-index:2;
   }
 
-  /* Warm glow hover */
-  .card:hover{
-    transform: translateY(-6px);
-    background: rgba(255,255,255,.06);
-    border-color: rgba(255,180,84,.35);
-    box-shadow:
-      0 18px 45px rgba(0,0,0,.42),
-      0 0 0 1px rgba(255,180,84,.10) inset,
-      0 0 34px rgba(255,180,84,.12);
+  .posterInner{
+    padding:24px 22px;
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:14px;
   }
 
-  .card:before{
-    content:"";
-    position:absolute;
-    inset:-50px -50px auto auto;
-    width:180px;height:180px;
-    background: radial-gradient(circle at 30% 30%, rgba(255,180,84,.22), transparent 60%);
-    transform: rotate(22deg);
-    pointer-events:none;
+  .posterHeader{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    border-bottom:1px dashed rgba(255,255,255,.14);
+    padding-bottom:14px;
   }
 
-  .ext{
-    position:absolute;
-    top:14px; right:14px;
-    color: rgba(255,255,255,.55);
-    font-size: .95rem;
+  .posterHeader .stamp{
+    font-weight:800;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color: rgba(255,180,84,.88);
+    font-size:.85rem;
   }
 
-  .icon{
-    font-size:1.85rem;
-    margin-bottom:10px;
-  }
-
-  .card h2{
-    margin:0 0 8px;
-    font-size:1.15rem;
-    letter-spacing:.2px;
-  }
-
-  .card p{
+  .tracklist{
+    list-style:none;
+    padding:0;
     margin:0;
-    font-size:.95rem;
+    display:grid;
+    gap:12px;
+  }
+
+  .track{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    padding:14px 12px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.16);
+    transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .track:hover{
+    transform: translateY(-4px);
+    border-color: rgba(255,180,84,.30);
+    background: rgba(255,255,255,.04);
+    box-shadow: 0 0 40px rgba(255,180,84,.10);
+  }
+
+  .track a{
+    color:var(--text);
+    text-decoration:none;
+    display:block;
+    width:100%;
+  }
+
+  .trackLeft{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+
+  .no{
+    width:34px;
+    height:34px;
+    border-radius: 12px;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+    color: rgba(15,11,6,.92);
+    background: linear-gradient(135deg, rgba(255,180,84,1), rgba(255,106,61,.95));
+  }
+
+  .trackTitle{
+    margin:0;
+    font-size:1.12rem;
+    letter-spacing:.2px;
+    font-weight:800;
+  }
+  .trackDesc{
+    margin:6px 0 0;
     color:var(--muted);
+    font-size:.95rem;
     line-height:1.45;
   }
 
+  .ext{
+    color: rgba(255,255,255,.55);
+    font-size: .95rem;
+    margin-top:2px;
+    white-space:nowrap;
+  }
+
+  /* ===== CARDS MODE (optional) ===== */
+  .cards{
+    margin-top:18px;
+    display:none;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap:16px;
+    position:relative;
+    z-index:2;
+  }
+  .card{
+    text-decoration:none;
+    color:var(--text);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius: var(--radius);
+    padding:22px 18px;
+    background:
+      radial-gradient(220px 150px at 20% 20%, rgba(255,180,84,.10), transparent 60%),
+      radial-gradient(260px 170px at 85% 30%, rgba(255,106,61,.08), transparent 60%),
+      rgba(255,255,255,.03);
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
+    position:relative;
+    overflow:hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,.30);
+    min-height: 146px;
+  }
+  .card:hover{
+    transform: translateY(-6px);
+    border-color: rgba(255,180,84,.35);
+    box-shadow:
+      0 20px 52px rgba(0,0,0,.45),
+      0 0 0 1px rgba(255,180,84,.10) inset,
+      0 0 42px rgba(255,180,84,.12);
+    background:
+      radial-gradient(220px 150px at 20% 20%, rgba(255,180,84,.13), transparent 60%),
+      radial-gradient(260px 170px at 85% 30%, rgba(255,106,61,.10), transparent 60%),
+      rgba(255,255,255,.05);
+  }
+  .card .icon{ font-size:1.9rem; margin-bottom:10px; }
+  .card h2{ margin:0 0 8px; font-size:1.15rem; font-weight:800; }
+  .card p{ margin:0; color:var(--muted); font-size:.95rem; line-height:1.45; }
+  .card .extCorner{ position:absolute; top:14px; right:14px; color: rgba(255,255,255,.55); }
+
+  /* ===== CTA ===== */
   .hint{
     margin-top:16px;
-    color: rgba(255,255,255,.62);
+    color: rgba(255,255,255,.60);
     font-size:.92rem;
     border-top:1px solid rgba(255,255,255,.10);
     padding-top:14px;
     position:relative;
     z-index:2;
   }
-
-  /* CTA */
   .cta{
     margin-top:22px;
     padding:18px 18px;
-    border:1px solid var(--line);
+    border:1px solid rgba(255,255,255,.12);
     border-radius: var(--radius);
     background: rgba(255,255,255,.04);
     display:flex;
@@ -233,15 +352,13 @@
     position:relative;
     z-index:2;
   }
-
-  .cta b{ display:block; font-size:1.02rem; }
+  .cta b{ display:block; font-size:1.02rem; font-weight:800; }
   .cta span{ color:var(--muted); font-size:.95rem; }
-
   .btn{
     padding:12px 18px;
     border-radius:999px;
     text-decoration:none;
-    font-weight:800;
+    font-weight:900;
     color:#1a140c;
     background: linear-gradient(135deg, rgba(255,180,84,1), rgba(255,106,61,.95));
     transition:.2s ease;
@@ -261,62 +378,126 @@
 </head>
 
 <body>
-  <div class="wrap">
+  <div class="grain" id="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
 
-    <!-- Subtle animated waves -->
+  <div class="wrap">
     <div class="waves" aria-hidden="true">
-      <div class="wave"></div>
-      <div class="wave"></div>
-      <div class="wave"></div>
-      <div class="wave"></div>
+      <div class="wave"></div><div class="wave"></div><div class="wave"></div><div class="wave"></div>
     </div>
 
-    <div class="top">
+    <div class="topbar">
       <div class="brand">
         <div class="logo">♪</div>
-        <div>
+        <div class="title">
           <h1 id="title">Music Learning Library</h1>
-          <div class="subtitle" id="subtitle">
-            A curated structural map of music learning resources by instrument and topic.
-          </div>
+          <p id="subtitle">An artful index — browse by instrument like a tracklist.</p>
         </div>
       </div>
 
-      <div class="langBtn" id="langBtn" onclick="toggleLang()">Tiếng Việt</div>
+      <div class="controls">
+        <div class="pill" id="viewBtn" onclick="toggleView()">Switch to Cards</div>
+        <div class="pill" id="grainBtn" onclick="toggleGrain()">Turn Grain Off</div>
+        <div class="pill" id="langBtn" onclick="toggleLang()">Tiếng Việt</div>
+      </div>
     </div>
 
-    <div class="grid">
+    <!-- POSTER MODE -->
+    <section class="poster" id="poster">
+      <div class="posterInner">
+        <div class="posterHeader">
+          <div class="stamp" id="stamp">ACOUSTIC INDEX</div>
+          <div style="color: rgba(255,255,255,.60); font-size:.92rem;" id="posterTip">
+            Open a track ↗ (new tab)
+          </div>
+        </div>
+
+        <ul class="tracklist">
+          <li class="track">
+            <a href="guitar-ukelele.html" target="_blank" rel="noopener noreferrer">
+              <div class="trackLeft">
+                <div class="no">01</div>
+                <div>
+                  <div class="trackTitle" id="t1">Guitar & Ukulele</div>
+                  <div class="trackDesc" id="t1d">Chords · Rhythm · Solo · Technique</div>
+                </div>
+              </div>
+            </a>
+            <div class="ext">↗</div>
+          </li>
+
+          <li class="track">
+            <a href="piano-keyboard-organ.html" target="_blank" rel="noopener noreferrer">
+              <div class="trackLeft">
+                <div class="no">02</div>
+                <div>
+                  <div class="trackTitle" id="t2">Piano · Keyboard · Organ</div>
+                  <div class="trackDesc" id="t2d">Foundations · Voicings · Performance</div>
+                </div>
+              </div>
+            </a>
+            <div class="ext">↗</div>
+          </li>
+
+          <li class="track">
+            <a href="bass-drum-cajon.html" target="_blank" rel="noopener noreferrer">
+              <div class="trackLeft">
+                <div class="no">03</div>
+                <div>
+                  <div class="trackTitle" id="t3">Bass · Drum · Cajón</div>
+                  <div class="trackDesc" id="t3d">Groove · Timing · Band Practice</div>
+                </div>
+              </div>
+            </a>
+            <div class="ext">↗</div>
+          </li>
+
+          <li class="track">
+            <a href="sheets-tabs-vocal.html" target="_blank" rel="noopener noreferrer">
+              <div class="trackLeft">
+                <div class="no">04</div>
+                <div>
+                  <div class="trackTitle" id="t4">Tabs · Sheets · Vocal</div>
+                  <div class="trackDesc" id="t4d">Reading · Singing · Music Theory</div>
+                </div>
+              </div>
+            </a>
+            <div class="ext">↗</div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CARDS MODE -->
+    <section class="cards" id="cards">
       <a class="card" href="guitar-ukelele.html" target="_blank" rel="noopener noreferrer">
-        <div class="ext">↗</div>
+        <div class="extCorner">↗</div>
         <div class="icon">🎸</div>
         <h2 id="c1">Guitar & Ukulele</h2>
         <p id="c1d">Chords · Rhythm · Solo · Technique</p>
       </a>
-
       <a class="card" href="piano-keyboard-organ.html" target="_blank" rel="noopener noreferrer">
-        <div class="ext">↗</div>
+        <div class="extCorner">↗</div>
         <div class="icon">🎹</div>
         <h2 id="c2">Piano · Keyboard · Organ</h2>
         <p id="c2d">Foundations · Voicings · Performance</p>
       </a>
-
       <a class="card" href="bass-drum-cajon.html" target="_blank" rel="noopener noreferrer">
-        <div class="ext">↗</div>
+        <div class="extCorner">↗</div>
         <div class="icon">🥁</div>
         <h2 id="c3">Bass · Drum · Cajón</h2>
         <p id="c3d">Groove · Timing · Band Practice</p>
       </a>
-
       <a class="card" href="sheets-tabs-vocal.html" target="_blank" rel="noopener noreferrer">
-        <div class="ext">↗</div>
+        <div class="extCorner">↗</div>
         <div class="icon">🎼</div>
         <h2 id="c4">Tabs · Sheets · Vocal</h2>
         <p id="c4d">Reading · Singing · Music Theory</p>
       </a>
-    </div>
+    </section>
 
     <div class="hint" id="hint">
-      Tip: Open a category, then use <b>Ctrl+F</b> (or “Find in page”) to search fast inside that page.
+      Tip: Open a category, then use <b>Ctrl+F</b> (or “Find in page”) to search inside that page.
     </div>
 
     <div class="cta">
@@ -324,44 +505,59 @@
         <b id="ctaTitle">Want a personalized learning path?</b>
         <span id="ctaSub">Tell me your goal + minutes/day + current level.</span>
       </div>
-      <a class="btn" href="mailto:khotailieuamnhac@gmail.com?subject=Music%20Library%20-%20Request%20Guidance" id="ctaBtn">
-        Contact
-      </a>
+      <a class="btn" href="mailto:khotailieuamnhac@gmail.com?subject=Music%20Library%20-%20Request%20Guidance" id="ctaBtn">Contact</a>
     </div>
 
     <footer id="footer">
       This page shares a structured index only. No original course files are distributed.
     </footer>
-
   </div>
 
 <script>
   let english = true;
+  let posterMode = true;
+  let grainOn = true;
+
+  function toggleView(){
+    posterMode = !posterMode;
+    document.getElementById("poster").style.display = posterMode ? "block" : "none";
+    document.getElementById("cards").style.display  = posterMode ? "none"  : "grid";
+    document.getElementById("viewBtn").innerText = posterMode ? (english ? "Switch to Cards" : "Chuyển sang Card")
+                                                             : (english ? "Switch to Poster" : "Chuyển sang Poster");
+  }
+
+  function toggleGrain(){
+    grainOn = !grainOn;
+    document.getElementById("grain").style.display = grainOn ? "block" : "none";
+    document.getElementById("grainBtn").innerText = grainOn ? (english ? "Turn Grain Off" : "Tắt Grain")
+                                                            : (english ? "Turn Grain On"  : "Bật Grain");
+  }
 
   function toggleLang(){
+    english = !english;
+    document.documentElement.lang = english ? "en" : "vi";
+
     if(english){
-      document.documentElement.lang = "vi";
-      document.getElementById("title").innerText = "Kho Học Nhạc";
-      document.getElementById("subtitle").innerText = "Bản đồ cấu trúc tài liệu học nhạc theo nhạc cụ và chủ đề.";
-      document.getElementById("c1").innerText = "Guitar & Ukulele";
-      document.getElementById("c1d").innerText = "Hợp âm · Đệm · Solo · Kỹ thuật";
-      document.getElementById("c2").innerText = "Piano · Keyboard · Organ";
-      document.getElementById("c2d").innerText = "Nền tảng · Hợp âm · Biểu diễn";
-      document.getElementById("c3").innerText = "Bass · Drum · Cajón";
-      document.getElementById("c3d").innerText = "Groove · Nhịp · Chơi ban nhạc";
-      document.getElementById("c4").innerText = "Tabs · Sheet · Thanh nhạc";
-      document.getElementById("c4d").innerText = "Đọc nhạc · Hát · Lý thuyết";
-      document.getElementById("hint").innerHTML = "Mẹo: Mở một danh mục, rồi dùng <b>Ctrl+F</b> (hoặc “Find in page”) để tìm nhanh trong trang đó.";
-      document.getElementById("ctaTitle").innerText = "Bạn muốn lộ trình học cá nhân hoá?";
-      document.getElementById("ctaSub").innerText = "Gửi giúp mình mục tiêu + số phút/ngày + trình độ hiện tại.";
-      document.getElementById("ctaBtn").innerText = "Liên hệ";
-      document.getElementById("footer").innerText = "Trang này chỉ chia sẻ bản đồ cấu trúc. Không phân phối file gốc của các khoá học.";
-      document.getElementById("langBtn").innerText = "English";
-      english = false;
-    }else{
-      document.documentElement.lang = "en";
       document.getElementById("title").innerText = "Music Learning Library";
-      document.getElementById("subtitle").innerText = "A curated structural map of music learning resources by instrument and topic.";
+      document.getElementById("subtitle").innerText = "An artful index — browse by instrument like a tracklist.";
+      document.getElementById("stamp").innerText = "ACOUSTIC INDEX";
+      document.getElementById("posterTip").innerText = "Open a track ↗ (new tab)";
+      document.getElementById("hint").innerHTML = "Tip: Open a category, then use <b>Ctrl+F</b> (or “Find in page”) to search inside that page.";
+      document.getElementById("ctaTitle").innerText = "Want a personalized learning path?";
+      document.getElementById("ctaSub").innerText = "Tell me your goal + minutes/day + current level.";
+      document.getElementById("ctaBtn").innerText = "Contact";
+      document.getElementById("footer").innerText = "This page shares a structured index only. No original course files are distributed.";
+      document.getElementById("langBtn").innerText = "Tiếng Việt";
+
+      document.getElementById("t1").innerText = "Guitar & Ukulele";
+      document.getElementById("t1d").innerText = "Chords · Rhythm · Solo · Technique";
+      document.getElementById("t2").innerText = "Piano · Keyboard · Organ";
+      document.getElementById("t2d").innerText = "Foundations · Voicings · Performance";
+      document.getElementById("t3").innerText = "Bass · Drum · Cajón";
+      document.getElementById("t3d").innerText = "Groove · Timing · Band Practice";
+      document.getElementById("t4").innerText = "Tabs · Sheets · Vocal";
+      document.getElementById("t4d").innerText = "Reading · Singing · Music Theory";
+
       document.getElementById("c1").innerText = "Guitar & Ukulele";
       document.getElementById("c1d").innerText = "Chords · Rhythm · Solo · Technique";
       document.getElementById("c2").innerText = "Piano · Keyboard · Organ";
@@ -370,15 +566,47 @@
       document.getElementById("c3d").innerText = "Groove · Timing · Band Practice";
       document.getElementById("c4").innerText = "Tabs · Sheets · Vocal";
       document.getElementById("c4d").innerText = "Reading · Singing · Music Theory";
-      document.getElementById("hint").innerHTML = "Tip: Open a category, then use <b>Ctrl+F</b> (or “Find in page”) to search fast inside that page.";
-      document.getElementById("ctaTitle").innerText = "Want a personalized learning path?";
-      document.getElementById("ctaSub").innerText = "Tell me your goal + minutes/day + current level.";
-      document.getElementById("ctaBtn").innerText = "Contact";
-      document.getElementById("footer").innerText = "This page shares a structured index only. No original course files are distributed.";
-      document.getElementById("langBtn").innerText = "Tiếng Việt";
-      english = true;
+
+      document.getElementById("grainBtn").innerText = grainOn ? "Turn Grain Off" : "Turn Grain On";
+      document.getElementById("viewBtn").innerText = posterMode ? "Switch to Cards" : "Switch to Poster";
+    } else {
+      document.getElementById("title").innerText = "Kho Học Nhạc";
+      document.getElementById("subtitle").innerText = "Một trang index kiểu poster — duyệt theo nhạc cụ như tracklist.";
+      document.getElementById("stamp").innerText = "BẢN ĐỒ ACOUSTIC";
+      document.getElementById("posterTip").innerText = "Mở mục ↗ (tab mới)";
+      document.getElementById("hint").innerHTML = "Mẹo: Mở một danh mục, rồi dùng <b>Ctrl+F</b> (hoặc “Find in page”) để tìm trong trang đó.";
+      document.getElementById("ctaTitle").innerText = "Bạn muốn lộ trình học cá nhân hoá?";
+      document.getElementById("ctaSub").innerText = "Gửi giúp mình mục tiêu + số phút/ngày + trình độ hiện tại.";
+      document.getElementById("ctaBtn").innerText = "Liên hệ";
+      document.getElementById("footer").innerText = "Trang này chỉ chia sẻ bản đồ cấu trúc. Không phân phối file gốc của các khoá học.";
+      document.getElementById("langBtn").innerText = "English";
+
+      document.getElementById("t1").innerText = "Guitar & Ukulele";
+      document.getElementById("t1d").innerText = "Hợp âm · Đệm · Solo · Kỹ thuật";
+      document.getElementById("t2").innerText = "Piano · Keyboard · Organ";
+      document.getElementById("t2d").innerText = "Nền tảng · Hợp âm · Biểu diễn";
+      document.getElementById("t3").innerText = "Bass · Drum · Cajón";
+      document.getElementById("t3d").innerText = "Groove · Nhịp · Chơi ban nhạc";
+      document.getElementById("t4").innerText = "Tabs · Sheet · Thanh nhạc";
+      document.getElementById("t4d").innerText = "Đọc nhạc · Hát · Lý thuyết";
+
+      document.getElementById("c1").innerText = "Guitar & Ukulele";
+      document.getElementById("c1d").innerText = "Hợp âm · Đệm · Solo · Kỹ thuật";
+      document.getElementById("c2").innerText = "Piano · Keyboard · Organ";
+      document.getElementById("c2d").innerText = "Nền tảng · Hợp âm · Biểu diễn";
+      document.getElementById("c3").innerText = "Bass · Drum · Cajón";
+      document.getElementById("c3d").innerText = "Groove · Nhịp · Chơi ban nhạc";
+      document.getElementById("c4").innerText = "Tabs · Sheet · Thanh nhạc";
+      document.getElementById("c4d").innerText = "Đọc nhạc · Hát · Lý thuyết";
+
+      document.getElementById("grainBtn").innerText = grainOn ? "Tắt Grain" : "Bật Grain";
+      document.getElementById("viewBtn").innerText = posterMode ? "Chuyển sang Card" : "Chuyển sang Poster";
     }
   }
+
+  // init states
+  toggleView();      // toggles once; we want poster by default -> call twice
+  toggleView();      // now poster is on, button text correct for English
 </script>
 </body>
 </html>
